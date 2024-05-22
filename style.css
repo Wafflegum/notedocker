@@ -17,7 +17,7 @@ body {
     padding: 0;
     overflow:hidden;
 }
-.container {
+#container {
     height: 800px;
     width: 100%;
 }
@@ -31,24 +31,47 @@ body {
     position: fixed;
     z-index: 1000;
 } */
-#window-section {
+#tabs-section {
     height: 40px;
     width: 100%;
-    background-color: #331D2C;
+    /* background-color: #331D2C; */
     display:flex;
+    gap: 5px;
+    align-items: center;
     border-radius: 10px 10px 0 0;
 }
 
-#window-section .window-box {
+#tabs-section .tab-box {
     box-sizing: border-box;
     font-size: 14px;
-    width: 10%;
-    height: 95%;
+    width: auto;
+    padding: 0 20px 0 20px;
+    height: 80%;
     background: #3F2E3E;
-    border-radius: 10px 10px 0 0;
+    border-radius: 110px;;
     display:flex;
     align-items: center;
-    padding-left: 8px;
+    justify-content: center;
+}
+#add-tab-btn {
+    width:25px;
+    height: 80%;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #3F2E3E;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+#add-tab-btn:hover {
+    cursor:pointer;
+}
+.rename-input {
+    width:100%;
+    color:#EFE1D1;
+    outline: 0;
+    border: 0;
+     background-color: transparent;
 }
 
 textarea {

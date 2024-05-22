@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notepad</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <div id="main">
         <div id="sidebar"></div>
 
-        <div class="container">
-            <div id="window-section">
-                <div class="window-box">Window</div>
-            </div>
-            <textarea id="notepad"></textarea>
+        <div id="container">
+            <div id="tabs-section">
+                <div class="tab-box" id='tab' onclick="openTab('Window')">Window</div>
+                <div id="add-tab-btn">+</div>
 
+            </div>
+            <textarea class=notepad id="Window">Write here!</textarea>
         </div>
-    
+
+        <script src="script.js"></script>
     </div>
 </body>
 </html>
