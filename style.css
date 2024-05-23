@@ -1,13 +1,13 @@
 /* palette: https://colorhunt.co/palette/331d2c3f2e3ea78295efe1d1 */
 
 *{
-    color: #EFE1D1;
+    color: #000000c5;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body, html {
     background-image: url('Images/wp4587063-854834038.jpg');
-    color: #EFE1D1;
+    color: #000000ce;
     height:100%;
     width:100%;
 }
