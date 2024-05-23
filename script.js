@@ -8,6 +8,8 @@ var tabs = document.getElementsByClassName("tab-box");
 var tabCounter = 1;
 var tabsData = [];
 
+var openedTab;
+
 addTab.addEventListener("click", function() {
     createTab();
 })
@@ -34,7 +36,7 @@ function createTab ()
 
     //This will make the tab clickable 
     tab.addEventListener("click", function() {
-        openTab(tabWindow.id);
+        openTab(tabWindow.id, tabID);
     });
 
     tab.addEventListener('dblclick', function() {
@@ -56,13 +58,21 @@ function createTab ()
     console.log('Created a tab id ' + tabWindow.id + ' with class name ' + tabWindow.className)
     
     tabCounter++;
-    openTab(tabWindow.id);
+    openTab(tabWindow.id, tabID);
 }
-function openTab(tabName) {
+function openTab(notepadID, tabID) {
     for (let i = 0; i < notepads.length; i++) {
         notepads[i].style.display = "none";
     }
-    document.getElementById(tabName).style.display = "block";
+    document.getElementById(notepadID).style.display = "block";
+    
+    if(openedTab != null)
+    {
+        document.getElementById(openedTab).style.filter = 'saturate(250%)';
+    }
+    openedTab = tabID;
+
+    document.getElementById(tabID).style.filter = 'brightness(110%) saturate(250%)';
 }
 
 function renameTab (tab) {
@@ -78,6 +88,8 @@ function renameTab (tab) {
     input.type = 'text';
     input.value = currentName;
     input.className = 'rename-input';
+    input.maxLength = 30;
+    input.style.flexBasis = '100';
     tab.firstChild.replaceWith(input);
     input.focus();
 
@@ -125,7 +137,6 @@ function saveContent(tabID, content) { // saves the specified notepad's text con
 
 function load()
 {
-    
     var data = JSON.parse(localStorage.getItem("savedTabs"));
 
     if(Array.isArray(data)){
@@ -151,7 +162,7 @@ function load()
             tabWindow.textContent = currentTab.text;
             //This will make the tab clickable 
             tab.addEventListener("click", function() {
-                openTab(tabWindow.id);
+                openTab(tabWindow.id, tabID);
             });
 
             tab.addEventListener('dblclick', function() {
@@ -165,7 +176,7 @@ function load()
             console.log('Created a tab id ' + tabWindow.id + ' with class name ' + tabWindow.className)
             
             tabCounter++;
-            openTab(tabWindow.id);
+            openTab(tabWindow.id, tabID);
         });
     }  
         
