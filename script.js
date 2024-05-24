@@ -21,7 +21,9 @@ function createTab ()
     // This creates the Tab button
     var tab = document.createElement("div");
     tab.id = tabID;
-    tab.textContent = tabName;
+    var span = document.createElement("span");
+    tab.appendChild(span);
+    span.textContent = tabName;
     tab.className = 'tab-box';
     document.getElementById("tabs-section").insertBefore(tab, addTab);
 
@@ -40,7 +42,7 @@ function createTab ()
     });
 
     tab.addEventListener('dblclick', function() {
-        renameTab(tab);
+        renameTab(tab, span);
     });
     // adds the save function that will be called when the text content changes
     tabWindow.addEventListener('input', function() {
@@ -69,10 +71,12 @@ function openTab(notepadID, tabID) {
     if(openedTab != null)
     {
         document.getElementById(openedTab).style.filter = 'saturate(250%)';
+        document.getElementById(openedTab).style.opacity = '.9';
     }
     openedTab = tabID;
 
     document.getElementById(tabID).style.filter = 'brightness(110%) saturate(250%)';
+
 }
 
 function renameTab (tab) {
@@ -147,7 +151,10 @@ function load()
             // This creates the Tab button
             var tab = document.createElement("div");
             tab.id = tabID;
-            tab.textContent = tabName;
+            var span = document.createElement("span");
+            tab.appendChild(span);
+            span.textContent = tabName; 
+
             tab.className = 'tab-box';
             document.getElementById("tabs-section").insertBefore(tab, addTab);
 
@@ -188,5 +195,4 @@ if(JSON.parse(localStorage.getItem("savedTabs")) == null)
 } else {
     load(); 
 }
-console.log(JSON.parse(localStorage.getItem("savedTabs")));
 
