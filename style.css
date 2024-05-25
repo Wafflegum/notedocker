@@ -6,7 +6,7 @@
 }
 
 body, html {
-    background-image: url('/Images/wp4587063-854834038.jpg');
+    background-image: url('/Images/japanese\ torii.jpg');
     color: #000000ce;
     height:100%;
     width:100%;
@@ -27,8 +27,8 @@ body, html {
     align-items: center;
     height: 90%;
     width: 90%;
-    
 }
+/* #region Sidebar */
 #sidebar {
     width: 400px;
     height:100%;
@@ -60,9 +60,22 @@ body, html {
     display: flex;
     align-items: center;
 }
+#clear-btn {
+    border-radius: 25px;
+    margin: 25px 25px 0 25px;
+    padding: 10px 20px 10px 20px;
+    width: fit-content;
+    border: 0;
+    outline:0;
 
+    background-color: #ffffff83;
+}
+
+/* #endregion */
+
+/* #region Tab Section */
 #tabs-section {
-    height: 45px;
+    height: 50px;
     width: 100%;
     /* background-color: #331D2C; */
     display: flex;
@@ -72,13 +85,11 @@ body, html {
     align-items: center;
     border-radius: 10px 10px 0 0;
     overflow-x:scroll;
-
+    margin-bottom: 5px;
 }
 
 #tabs-section .tab-box {
-    min-width: 90px;
-    max-width: 200px;
-    width: auto;
+    min-width: fit-content;
     box-sizing: border-box;
     font-size: 14px;
 
@@ -93,7 +104,7 @@ body, html {
     /* background: none; */
     box-shadow: 3.5px 3.5px 5px rgba(0, 0, 0, 0.082);
 
-    display:block;
+    display:flex;
     text-align: center;
     align-items: center;
     border-radius: 110px;
@@ -101,25 +112,15 @@ body, html {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    transition: 0.1s ease;
-
-}
-#tabs-section .tab-box span {
-    position: relative;
-    top: 18%; 
-    transform: translateY(-18%);
-    mix-blend-mode: difference-opacity;
-
-
+    transition: all 0.1s ease;
 }
 
 #tabs-section .tab-box:hover {
     height:90%;
-
 }
 
 #add-tab-btn {
-    width: 30px;
+    min-width: 30px;
     height: 70%;
     border-radius: 14px;
 
@@ -128,19 +129,18 @@ body, html {
     backdrop-filter: blur(50px);
     display:flex;
     padding:1px;
+    margin-right: 5px;
 
     justify-content: center;
     align-items: center;
     transition: 0.1s ease;
     box-shadow: 3.5px 3.5px 5px rgba(0, 0, 0, 0.082);
 }
-
 #add-tab-btn img {
     width: 18px;
     height: 18px;
     opacity: 0.45;
 }
-
 #add-tab-btn:hover {
     cursor:pointer;
 
@@ -149,21 +149,51 @@ body, html {
     background: #ffffff17;
 }
 
+.close-btn {
+    margin-left: 10px;
+    border: 0;
+    border-radius: 8px;
+    width: 14px;
+
+    background:#ffffff00;
+    opacity: 0.4;
+    color: rgba(0, 0, 0, 0.836);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 .rename-input {
-    width:100%;
     color:#000000;
+    text-align: center;
+
     outline: 0;
     border: 0;
     background-color: transparent;
 }
+/* #endregion */
+
+/* #region Scrollbar style */
+#tabs-section::-webkit-scrollbar{
+    height: 5px;
+    
+}
+#tabs-section::-webkit-scrollbar-thumb
+{
+    background: #ffffff52;
+    border-radius: 40px;
+}
+/* #endregion */
+
 
 textarea {
     /* background: #3F2E3E; */
-    background-color: #ffffff7c;
+    background-color: #ffffff10;
     backdrop-filter: blur(50px) saturate(200%);
-    background:none;
+    /* background:none; */
     color: rgba(0, 0, 0, 0.658);
-
     width: 100%;
     height: 100%;
     max-height: 100%; 
@@ -178,15 +208,4 @@ textarea {
     box-sizing: border-box;
 }
 
-/* #region Scrollbar style */
-#tabs-section::-webkit-scrollbar{
-    height: 5px;
-}
-#tabs-section::-webkit-scrollbar-thumb
-{
-    background: #ffffff91;
-    border-radius: 40px;
-}
-
-/* #endregion */
 

@@ -9,10 +9,24 @@ var tabCounter = 1;
 var tabsData = [];
 
 var openedTab;
+var openedNotepad;
+
+var notepadDefaultText = "Type here...";
+
+// Buttons
+var clearButton = document.getElementById("clear-btn");
 
 addTab.addEventListener("click", function() {
     createTab();
 })
+
+clearButton.addEventListener("click", function() {
+    clearAllTabs();
+});
+
+function clearAllTabs(){
+    localStorage.clear();
+}
 
 function createTab ()
 {
@@ -34,6 +48,7 @@ function createTab ()
     //this will check if there's another tab that has an id of "New Tab"
     tabWindow.id = 'notepadTab-' + tabCounter;
     tabWindow.className = 'notepad';
+    tabWindow.placeholder = notepadDefaultText; // placeholder text
     container.appendChild(tabWindow);
 
     //This will make the tab clickable 
@@ -49,12 +64,27 @@ function createTab ()
         saveContent(tabID, tabWindow.value);
     })
 
+    //#region Close button
+    // This creates the close button and make it functional
+    var closeButton = document.createElement('img');
+    
+    closeButton.src = 'https://img.icons8.com/?size=100&id=2i5n7zNvArOt&format=png&color=000000';
+    closeButton.className = 'close-btn';
+    
+    tab.appendChild(closeButton);
+
+    closeButton.addEventListener('click', function(event) {
+        event.stopPropagation();
+        closeTab(tabWindow.id, tab.id);
+    });
+    //#endregion
+
     var tabData = {
         id: tabID,
         tabName: tabName,
         text: tabWindow.value
     };
-
+    
     tabsData.push(tabData);
     saveTabs();
     console.log('Created a tab id ' + tabWindow.id + ' with class name ' + tabWindow.className)
@@ -72,15 +102,17 @@ function openTab(notepadID, tabID) {
     {
         document.getElementById(openedTab).style.filter = 'saturate(250%)';
         document.getElementById(openedTab).style.opacity = '.9';
+        document.getElementById(openedTab).style.height = '80%';
     }
     openedTab = tabID;
+    openedNotepad = notepadID;
 
     document.getElementById(tabID).style.filter = 'brightness(110%) saturate(250%)';
-
+    document.getElementById(tabID).style.height = '93%';
 }
 
 function renameTab (tab) {
-    var currentName = tab.textContent;
+    var currentName = tab.firstChild.textContent;
     // var newName = prompt('Enter tab name');
     // if(newName){
     // tab.textContent = newName;
@@ -157,6 +189,21 @@ function load()
 
             tab.className = 'tab-box';
             document.getElementById("tabs-section").insertBefore(tab, addTab);
+            
+            //#region Close button
+            // This creates the close button and make it functional
+            var closeButton = document.createElement('img');
+            
+            closeButton.src = 'https://img.icons8.com/?size=100&id=2i5n7zNvArOt&format=png&color=000000';
+            closeButton.className = 'close-btn';
+            
+            tab.appendChild(closeButton);
+
+            closeButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                closeTab(tabWindow.id, tab.id);
+            });
+            //#endregion
 
             // This creates the Tab window
 
@@ -167,6 +214,8 @@ function load()
             tabWindow.className = 'notepad';
             container.appendChild(tabWindow);
             tabWindow.textContent = currentTab.text;
+            tabWindow.placeholder = notepadDefaultText; // placeholder text
+
             //This will make the tab clickable 
             tab.addEventListener("click", function() {
                 openTab(tabWindow.id, tabID);
@@ -186,8 +235,42 @@ function load()
             openTab(tabWindow.id, tabID);
         });
     }  
-        
 }
+
+function closeTab(notepadID, tabID) {
+    var tabElement = document.getElementById(tabID);
+    console.log('closed ' + notepadID + ' ' + tabID);
+    if (tabElement){
+        tabElement.remove();
+    }
+
+    var notepadElement = document.getElementById(notepadID);
+
+    if (notepadElement)
+        notepadElement.remove();
+
+    tabsData = tabsData.filter(tab => tab.id !== tabID);
+    saveTabs();
+
+    if(openedTab === tabID)
+    {
+        openedTab = null;
+        notepadID = null;
+    }
+
+    // Open the last tab if any
+    // // if (tabsData.length > 0) {
+    // //     var lastTab = tabsData[tabsData.length - 1];
+    // //     openTab(lastTab.notepadID, lastTab.tabID);
+    // // } else {
+    // //     openedTab = null;
+    // //     openedNotepad = null;
+    // // }
+
+    // openTab(openedNotepad, openedTab);
+}
+
+
 
 if(JSON.parse(localStorage.getItem("savedTabs")) == null)
 {
