@@ -1,0 +1,318 @@
+:root {
+    --background-image: url('/Images/japanese\ torii.jpg');
+    --test-border: 1px solid yellow;
+
+    
+    --text-color-UI: rgba(0, 0, 0, 0.8);
+    --text-color-notepad:rgba(0, 0, 0, 0.7);
+
+}
+*{
+    color: var(--text-color-UI);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    color: var(--text-color-UI);
+    background-image: var(--background-image);
+    height:100%;
+    width:100%;
+    overflow:hidden;
+
+}
+#main {
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+#container {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90%;
+    width: 90%;
+}
+
+/* #region Sidebar */
+#sidebar {
+    width: 400px;
+    height:100%;
+    background-color: #ffffff2c;
+    backdrop-filter: blur(50px);
+    filter: saturate(150%);
+
+    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.096);
+
+    left: -350px;
+    /* left: 0px; */
+
+    top: 0;
+    position: fixed;
+    z-index: 1;
+
+    transition: 0.3s ease;
+}
+
+#sidebar:hover {
+    left: 0;
+}
+#sidebar-title {
+    max-width: 100%;
+    padding: 0 25px 15px 25px;
+    height: 60px;
+    font-size: 24px;
+
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.089);
+
+    display: flex;
+    align-items: center;
+}
+
+#sidebar-title span {
+    flex-grow: 10;
+}
+#sidebar-title #settings-btn, #add-notebook-btn {
+    height: 25px;
+    max-width: 25px;
+    flex-grow: 1;
+    
+    border: 0;
+    border-radius: 10px;
+    outline: 0;
+    padding: 5px;
+
+    opacity: 0.6;
+
+    transition: box-shadow 0.5s ease;
+}
+
+#sidebar-title #settings-btn:hover, #add-notebook-btn:hover {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.315);
+}
+
+#notebooks-section {
+    background-color:#00000007;
+
+    max-width: 100%;
+    height: 100%;
+    padding: 25px;
+}
+
+.notebook {
+    width: 100%;
+    height: 50px;
+    border: var(--test-border);
+}
+
+#clear-btn {
+    border-radius: 25px;
+    margin: 25px 25px 0 25px;
+    padding: 10px 20px 10px 20px;
+    width: fit-content;
+    border: 0;
+    outline:0;
+
+    background-color: #ffffff83;
+    transition: scale 5s ease;
+    scale: 1;
+    transition: box-shadow 0.3s ease;
+
+}
+
+#clear-btn:active {
+    scale: 0.9;
+}
+
+#clear-btn:hover {
+    background-color: #ffffff36;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.103);
+}
+
+/* #endregion */
+
+/* #region Tab Section */
+#tabs-section {
+    height: 50px;
+    width: 100%;
+    /* background-color: #331D2C; */
+    display: flex;
+    padding: 5px 8px 5px 5px;
+    gap: 5px;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+    overflow-x:scroll;
+    margin-bottom: 5px;
+}
+
+#tabs-section .tab-box {
+    min-width: fit-content;
+    box-sizing: border-box;
+    font-size: 14px;
+
+    padding: 8px 15px 8px 15px;
+    height: fit-content;
+    
+    background: #ffffff57;
+    filter: saturate(250%);
+    backdrop-filter: blur(50px);
+    /* background: none; */
+    box-shadow: 3.5px 3.5px 5px rgba(0, 0, 0, 0.082);
+
+    display:flex;
+    text-align: center;
+    align-items: center;
+    border-radius: 110px;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: transform 0.1s ease;
+}
+
+#tabs-section .tab-box:hover {
+    height:90%;
+}
+
+#add-tab-btn {
+    min-width: 30px;
+    height: 70%;
+    border-radius: 14px;
+
+    background: #ffffff3f;
+    filter: saturate(400%);
+    backdrop-filter: blur(50px);
+    display:flex;
+    padding:1px;
+    margin-right: 5px;
+
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease;
+    box-shadow: 3.5px 3.5px 5px rgba(0, 0, 0, 0.082);
+}
+#add-tab-btn img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.45;
+}
+#add-tab-btn:hover {
+    cursor:pointer;
+
+    width: 30px;
+    height: 80%;
+    background: #ffffff17;
+}
+
+.close-btn {
+    margin-left: 10px;
+    border: 0;
+    border-radius: 8px;
+    width: 14px;
+
+    background:#ffffff00;
+    opacity: 0.4;
+    color: rgba(0, 0, 0, 0.836);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    content:url(https://img.icons8.com/?size=100&id=2i5n7zNvArOt&format=png&color=000000);
+}
+
+.rename-input {
+    color:#000000c7;
+    text-align: center;
+    width:fit-content;
+    height:100%;
+    outline: 0;
+    border: 0;
+    background-color: transparent;
+}
+/* #endregion */
+
+/* #region Scrollbar style */
+#tabs-section::-webkit-scrollbar{
+    height: 5px;
+    
+}
+#tabs-section::-webkit-scrollbar-thumb
+{
+    background: #ffffff52;
+    border-radius: 40px;
+}
+/* #endregion */
+
+textarea {
+    /* background: #3F2E3E; */
+    background-color: #ffffff10;
+    backdrop-filter: blur(50px) saturate(200%);
+    /* background:none; */
+    color: var(--text-color-notepad);
+    width: 100%;
+    height: 100%;
+    max-height: 100%; 
+    padding: 35px;
+    font-size: 16px;
+    border: 0;
+    outline: 0;
+    border-radius: 50px;
+    
+    box-shadow: #0000002c 10px 11px 20px;
+    /* resize: none; */
+    box-sizing: border-box;
+}
+
+/* Settings */
+
+#settings-container {
+    position: fixed;
+    z-index: 3;
+
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#settings-page {
+    position:fixed;
+    width: 80%;
+    height: 80%;
+
+    padding: 50px;
+
+    box-sizing: border-box;
+    border-radius: 50px;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    z-index: 3;
+    
+    background-color:rgb(255, 255, 255);
+
+    box-shadow: #0000002c 10px 11px 20px;
+}
+
+/* Dark background */
+.overlay {
+    position:fixed;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+
+    backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.3);
+
+}
+
+

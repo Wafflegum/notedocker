@@ -1,5 +1,5 @@
 
-var addTab = document.getElementById("add-tab-btn");
+var addTabButton = document.getElementById("add-tab-btn");
 var addNotebook = document.getElementById("add-notebook-btn");
 
 var container = document.getElementById("container");
@@ -21,10 +21,25 @@ var openedNotebook;
 
 var notepadDefaultText = "Type here...";
 
+var settingsButton = document.getElementById("settings-btn");
+var settingsPanel = document.getElementById("settings-panel");
+
+var overlayBackground = document.getElementById("overlay");
+
 // Buttons
 var clearButton = document.getElementById("clear-btn");
 
-addTab.addEventListener("click", function() {
+settingsButton.addEventListener("click", function() {
+    settingsPanel.style.display = "flex";
+    overlayBackground.style.display = "block";
+});
+
+overlayBackground.addEventListener("click", function() {
+    settingsPanel.style.display = "none";
+    overlayBackground.style.display = "none";
+});
+
+addTabButton.addEventListener("click", function() {
     createTab();
 })
 
@@ -48,7 +63,7 @@ function createTab () //creates a new tab
     tab_.appendChild(span);
     span.textContent = tab_name;
     tab_.className = 'tab-box';
-    document.getElementById("tabs-section").insertBefore(tab_, addTab);
+    document.getElementById("tabs-section").insertBefore(tab_, addTabButton);
 
     // This creates the Tab window
 
@@ -239,8 +254,8 @@ function load() // loads all the tabs
             span.textContent = tabName; 
 
             tab.className = 'tab-box';
-            document.getElementById("tabs-section").insertBefore(tab, addTab);
-            
+            document.getElementById("tabs-section").insertBefore(tab, addTabButton);
+
             //#region Close button
             // This creates the close button and make it functional
             var closeButton = document.createElement('img');
