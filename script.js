@@ -1,16 +1,11 @@
-
-var addTabButton = document.getElementById("add-tab-btn");
-var addNotebook = document.getElementById("add-notebook-btn");
-
 var container = document.getElementById("container");
-
 var notepads = document.getElementsByClassName("notepad");
-var tabs = document.getElementsByClassName("tab-box");
+// // var tabs = document.getElementsByClassName("tab-box");
 
 var notebookSection = document.getElementById('notebooks-section');
 
-var tabCounter = 1;
-var notebookCounter = 1;
+var tabCounter = 0;
+var notebookCounter = 0;
 
 var tabsData = [];
 var notebooksData = []; // Notebooks will be an array of tabs/notepads
@@ -21,25 +16,45 @@ var openedNotebook;
 
 var notepadDefaultText = "Type here...";
 
+// Settings variables
 var settingsButton = document.getElementById("settings-btn");
 var settingsPanel = document.getElementById("settings-panel");
+var textContrastSlider = document.getElementById("text-contrast");
+var backgroundOpacitySlider = document.getElementById("background-opacity");
 
 var overlayBackground = document.getElementById("overlay");
 
 // Buttons
 var clearButton = document.getElementById("clear-btn");
+var addTabButton = document.getElementById("add-tab-btn");
+var addNotebook = document.getElementById("add-notebook-btn");
 
-settingsButton.addEventListener("click", function() {
+// CSS Variables
+var root = document.querySelector(":root");
+
+// Settings
+settingsButton.addEventListener("click", function() { // opens the settings panel
     settingsPanel.style.display = "flex";
     overlayBackground.style.display = "block";
 });
 
-overlayBackground.addEventListener("click", function() {
+overlayBackground.addEventListener("click", function() { // This closes the settings page when you click off the page
     settingsPanel.style.display = "none";
     overlayBackground.style.display = "none";
 });
 
-addTabButton.addEventListener("click", function() {
+textContrastSlider.oninput = () => {
+    root.style.setProperty("--text-contrast", textContrastSlider.value * 0.1);
+    console.log(root.style.getPropertyValue("--text-contrast"));
+}
+
+backgroundOpacitySlider.oninput = () => {
+    root.style.setProperty("--background-opacity", backgroundOpacitySlider.value * 0.1);
+}
+
+// Tab Buttons
+
+addTabButton.addEventListener("click", function() { // Adds tab when you click the add tab button
     createTab();
 })
 
@@ -54,6 +69,7 @@ function clearAllTabs(){
 
 function createTab () //creates a new tab
 {
+    tabCounter++;
     var tab_id = 'tab-' + tabCounter;
     var tab_name = 'New tab ' + tabCounter;
     // This creates the Tab button
@@ -112,11 +128,9 @@ function createTab () //creates a new tab
     saveTabs();
     console.log('Created a tab id ' + tabWindow.id + ' with class name ' + tabWindow.className)
     
-    tabCounter++;
     openTab(tabWindow.id, tab_id);
 
     notebooksData.tabsData?.push(tab_data);// Inserts the tab to the notebook
-
 }
 function openTab(notepad_id, tab_id) { //opens a tab
     for (let i = 0; i < notepads.length; i++) {
@@ -138,6 +152,7 @@ function openTab(notepad_id, tab_id) { //opens a tab
     document.getElementById(tab_id).style.filter = 'brightness(110%) saturate(250%)';
     document.getElementById(tab_id).style.height = '90%';
     document.getElementById(tab_id).style.transform = 'translateY(-5px)';
+    console.log('opened tab: ' + tab_id + ' opened notepad: ' + notepad_id)
 }
 
 function renameTab (tab_) { // this renames the tab
@@ -234,16 +249,18 @@ function closeTab(notepad_id, tab_id) {
     // openTab(openedNotepad, openedTab);
 }
 
-function load() // loads all the tabs
+function loadTabs() // loads all the tabs
 {  
 
-    // tabCounter = localStorage.getItem("Tab Counter");
+    tabCounter = JSON.parse(localStorage.getItem("Tab Counter"));
 
     var data = JSON.parse(localStorage.getItem("savedTabs"));
 
     if(Array.isArray(data)){
         tabsData = data;
         tabsData.forEach(function(currentTab) {
+            tabCounter++;
+
             var tabID = currentTab.id;
             var tabName = currentTab.tabName;
             // This creates the Tab button
@@ -273,9 +290,9 @@ function load() // loads all the tabs
             // This creates the Tab window
 
             var tabWindow = document.createElement("textarea");
-
+            
             //this will check if there's another tab that has an id of "New Tab"
-            tabWindow.id = 'notepadTab-' + tabCounter;
+            tabWindow.id = 'notepad-' + tabID;
             tabWindow.className = 'notepad';
             container.appendChild(tabWindow);
             tabWindow.textContent = currentTab.text;
@@ -296,10 +313,11 @@ function load() // loads all the tabs
 
             console.log('Created a tab id ' + tabWindow.id + ' with class name ' + tabWindow.className)
             
-            tabCounter++;
             openTab(tabWindow.id, tabID);
         });
     }  
+    tabCounter = JSON.parse(localStorage.getItem("Tab Counter"));
+
 }
 
 addNotebook?.addEventListener("click", function(){
@@ -331,17 +349,15 @@ function createNotebook() { // This will create the UI for the notebook
     notebookSection?.appendChild(notebook_);
 }
 
-
 function openNotebook(notebook_id) {
     openedNotebook = notebook_id;
 
 }
 
-
 if(JSON.parse(localStorage.getItem("savedTabs")) == null)
 {
     createTab();
 } else {
-    load(); 
+    loadTabs(); 
 }
 
