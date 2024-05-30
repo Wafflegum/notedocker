@@ -32,6 +32,9 @@ body, html
     height: 100%
     width: 100%
     overflow: hidden
+    backgound-size: 100% 100%
+    background-attachment: fixed
+    background-repeat: no-repeat
 
 
 #main 
@@ -59,16 +62,16 @@ body, html
     filter: saturate(150%)
 
     box-shadow: 10px 0 20px rgba(0, 0, 0, 0.096)
-
+    display: flex
+    flex-direction: column
     left: -350px
     /* left: 0px */
-
+    overflow: none
     top: 0
     position: fixed
     z-index: 1
 
     transition: 0.3s ease
-
 
 #sidebar:hover 
     left: 0
@@ -83,7 +86,6 @@ body, html
 
     display: flex
     align-items: center
-
 
 #sidebar-title span 
     flex-grow: 10
@@ -102,23 +104,44 @@ body, html
 
     transition: box-shadow 0.5s ease
 
-
 #sidebar-title #settings-btn:hover, #add-notebook-btn:hover 
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.315)
 
-
 #notebooks-section 
+    height: 100%
     background-color: #00000007
 
-    max-width: 100%
-    height: 100%
-    padding: 25px
-
-
+    padding: 10px
+    gap: 1px
+    overflow-y: scroll
+    scrollbar-gutter: stable
+    &::-webkit-scrollbar
+        width: 8px
+    &::-webkit-scrollbar-track
+        background: rgba(0, 0, 0, 0)
+        margin-block: 10px
+    &::-webkit-scrollbar-thumb
+        background: rgba(255, 255, 255, 0.5)
+        border-radius: 10px
+        
 .notebook 
     width: 100%
     height: 50px
-    border: var(--test-border)
+
+    padding: 5px 5px 5px 25px
+    
+    box-sizing: border-box
+
+    display: flex
+    align-items: center
+    transition: all 0.1s ease
+    
+    &:hover
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.315)
+        transform: translateY(-5px)
+        cursor: pointer
+    &:active
+        transform: translateY(0px)
 
 
 #clear-btn 
@@ -134,8 +157,6 @@ body, html
     scale: 1
     transition: box-shadow 0.3s ease
 
-
-
 #clear-btn:active 
     scale: 0.9
 
@@ -143,7 +164,6 @@ body, html
 #clear-btn:hover 
     background-color: #ffffff36
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.103)
-
 
 /* #endregion */
 
@@ -160,6 +180,12 @@ body, html
     overflow-x: scroll
     margin-bottom: 5px
 
+    &::-webkit-scrollbar
+        height: 5px
+        
+    &::-webkit-scrollbar-thumb
+        background: #ffffff52
+        border-radius: 40px
 
 #tabs-section .tab-box 
     min-width: fit-content
@@ -185,10 +211,8 @@ body, html
     white-space: nowrap
     transition: transform 0.1s ease
 
-
 #tabs-section .tab-box:hover 
     height: 90%
-
 
 #add-tab-btn 
     min-width: 30px
@@ -235,7 +259,6 @@ body, html
     text-align: center
     content: url(https://img.icons8.com/?size=100&id=2i5n7zNvArOt&format=png&color=000000)
 
-
 .rename-input 
     color: #000000c7
     text-align: center
@@ -247,22 +270,12 @@ body, html
 
 /* #endregion */
 
-/* #region Scrollbar style */
-#tabs-section::-webkit-scrollbar
-    height: 5px
-    
 
-#tabs-section::-webkit-scrollbar-thumb
-
-    background: #ffffff52
-    border-radius: 40px
-
-/* #endregion */
 
 textarea 
     /* background: #3F2E3E */
     background-color: var(--background-color)
-    backdrop-filter: blur(50px) saturate(200%)
+    backdrop-filter: blur(50px) saturate(200%) 
     /* background: none */
     color: var(--text-color-notepad)
     width: 100%
@@ -275,9 +288,8 @@ textarea
     border-radius: 50px
     
     box-shadow: #0000002c 10px 11px 20px
-    /* resize: none */
+    resize: none 
     box-sizing: border-box
-
 
 /* Settings */
 
@@ -306,8 +318,8 @@ textarea
 
     z-index: 3
     
-    background-image: var(--background-image)
-    filter: saturate(150%)
+    background-color: var(--background-color)
+    backdrop-filter: saturate(250%)
 
     box-shadow: #0000002c 10px 11px 20px
 
@@ -360,9 +372,6 @@ textarea
         margin-left: 10px
         width: fit-content
         
-
-
-
 /* Dark background */
 .overlay 
     position: fixed

@@ -1,18 +1,15 @@
 var container = document.getElementById("container");
 var notepads = document.getElementsByClassName("notepad");
-// // var tabs = document.getElementsByClassName("tab-box");
 
 var notebookSection = document.getElementById('notebooks-section');
 
-var tabCounter = 0;
 var notebookCounter = 0;
 
-var tabsData = [];
-var notebooksData = []; // Notebooks will be an array of tabs/notepads
+var notebookDatabase = []; // Notebooks will be an array of tabs/notepads
 
-var openedTab;
+var openedTabID;
 var openedNotepad;
-var openedNotebook;
+var openedNotebook = [];
 
 var notepadDefaultText = "Type here...";
 
@@ -45,7 +42,6 @@ overlayBackground.addEventListener("click", function() { // This closes the sett
 
 textContrastSlider.oninput = () => {
     root.style.setProperty("--text-contrast", textContrastSlider.value * 0.1);
-    console.log(root.style.getPropertyValue("--text-contrast"));
 }
 
 backgroundOpacitySlider.oninput = () => {
@@ -67,12 +63,15 @@ function clearAllTabs(){
     location.reload();
 }
 
-function createTab () //creates a new tab
+function createTab (tabID, tabName, text, loadMode) //creates a new tab
 {
-    tabCounter++;
-    var tab_id = 'tab-' + tabCounter;
-    var tab_name = 'New tab ' + tabCounter;
-    // This creates the Tab button
+    if(!loadMode)
+        openedNotebook.tab_counter++;
+
+    var tab_id = tabID || 'tab-' + openedNotebook.tab_counter;
+    var tab_name = tabName || 'New tab ' + openedNotebook.tab_counter;
+
+    // This creates the Tab
     var tab_ = document.createElement("div");
     tab_.id = tab_id;
     var span = document.createElement("span");
@@ -86,10 +85,13 @@ function createTab () //creates a new tab
     var tabWindow = document.createElement("textarea");
 
     //this will check if there's another tab that has an id of "New Tab"
-    tabWindow.id = 'notepadTab-' + tabCounter;
+    tabWindow.id = `notepad-${openedNotebook.id}-${tab_id}`;
     tabWindow.className = 'notepad';
     tabWindow.placeholder = notepadDefaultText; // placeholder text
     container.appendChild(tabWindow);
+
+    if(text)
+        tabWindow.value = text || '';
 
     //This will make the tab clickable 
     tab_.addEventListener("click", function() {
@@ -120,17 +122,26 @@ function createTab () //creates a new tab
 
     var tab_data = {
         id: tab_id,
-        tabName: tab_name,
+        name: tab_name,
         text: tabWindow.value
     };
     
-    tabsData.push(tab_data);
+    // // tabsData.push(tab_data);
+    if(!loadMode){
+        var notebook_ = notebookDatabase.find(nb => nb.id === openedNotebook.id);
+
+        if(notebook_){
+            notebookDatabase.find(nb => nb.id === openedNotebook.id).tabs_data.push(tab_data);
+            saveNotebooks();
+        } else {
+            console.error('No opened notebook found');
+        }
+    }
+
     saveTabs();
-    console.log('Created a tab id ' + tabWindow.id + ' with class name ' + tabWindow.className)
     
     openTab(tabWindow.id, tab_id);
 
-    notebooksData.tabsData?.push(tab_data);// Inserts the tab to the notebook
 }
 function openTab(notepad_id, tab_id) { //opens a tab
     for (let i = 0; i < notepads.length; i++) {
@@ -138,21 +149,20 @@ function openTab(notepad_id, tab_id) { //opens a tab
     }
     document.getElementById(notepad_id).style.display = "block";
     
-    if(openedTab != null)
+    if(document.getElementById(openedTabID))
     {
-        document.getElementById(openedTab).style.filter = 'saturate(250%)';
-        document.getElementById(openedTab).style.opacity = '.9';
-        document.getElementById(openedTab).style.height = 'fit-content';
-        document.getElementById(openedTab).style.transform = 'translateY(0px)';
+        document.getElementById(openedTabID).style.filter = 'saturate(250%)';
+        document.getElementById(openedTabID).style.opacity = '.9';
+        document.getElementById(openedTabID).style.height = 'fit-content';
+        document.getElementById(openedTabID).style.transform = 'translateY(0px)';
 
     }
-    openedTab = tab_id;
+    openedTabID = tab_id;
     openedNotepad = notepad_id;
 
     document.getElementById(tab_id).style.filter = 'brightness(110%) saturate(250%)';
     document.getElementById(tab_id).style.height = '90%';
     document.getElementById(tab_id).style.transform = 'translateY(-5px)';
-    console.log('opened tab: ' + tab_id + ' opened notepad: ' + notepad_id)
 }
 
 function renameTab (tab_) { // this renames the tab
@@ -178,19 +188,18 @@ function renameTab (tab_) { // this renames the tab
         var span_;
         span_ = document.createElement('span');
         
-
         if(new_name.trim() !== ''){
             
             span_.textContent = new_name;
             input_.replaceWith(span_);
 
-            var tab_data = tabsData.find(tabData => tabData.id === tab_.id);
+            var nb = notebookDatabase.find(nb => nb.id === openedNotebook.id);
+            var tab = nb.tabs_data.find(t => t.id === tab_.id);
             
-                tab_data.tabName = new_name;
-                saveTabs();
+            tab.name = new_name;
+            saveNotebooks();
 
-                console.log('Changed ' + tab_.id + ' from ' + currentName_ + 'to ' + tab_.tabName)
-                console.log(tabsData);
+            console.log('Changed ' + tab_.id + ' from ' + currentName_ + ' to ' + tab.name)
         } else {
             span_.textContent = currentName_;
             input_.replaceWith(span_);
@@ -206,14 +215,15 @@ function renameTab (tab_) { // this renames the tab
 }
 
 function saveTabs(){ // this will save all the tabs
-    localStorage.setItem("savedTabs", JSON.stringify(tabsData));
-    localStorage.setItem("Tab Counter", tabCounter);
+    //// localStorage.setItem("savedTabs", JSON.stringify(tabsData));
+    // // localStorage.setItem("Tab Counter", tabCounter);
 }
 function saveContent(tab_id, content_) { // saves the specified notepad's text contents
-    var tab = tabsData.find(tab => tab.id == tab_id);
+
+    var tab = openedNotebook.tabs_data.find(tab => tab.id == tab_id);
     tab.text = content_;
 
-    saveTabs();
+    saveNotebooks();
 }
 
 function closeTab(notepad_id, tab_id) {
@@ -228,19 +238,20 @@ function closeTab(notepad_id, tab_id) {
     if (notepadElement)
         notepadElement.remove();
 
-    tabsData = tabsData.filter(tab => tab.id !== tab_id);
+    openedNotebook.tabs_data = openedNotebook.tabs_data.filter(tab => tab.id !== tab_id);
+
     saveTabs();
 
-    if(openedTab === tab_id)
+    if(openedTabID === tab_id)
     {
-        openedTab = null;
+        openedTabID = null;
         notepad_id = null;
     }
 
     // Open the last tab if any
     // // if (tabsData.length > 0) {
     // //     var lastTab = tabsData[tabsData.length - 1];
-    // //     openTab(lastTab.notepadID, lastTab.tabID);
+    // //     openTab(lastTab.notepadID, lastTab.tab_id);
     // // } else {
     // //     openedTab = null;
     // //     openedNotepad = null;
@@ -249,115 +260,175 @@ function closeTab(notepad_id, tab_id) {
     // openTab(openedNotepad, openedTab);
 }
 
-function loadTabs() // loads all the tabs
-{  
+// // function loadTabs(notebook_id) // loads all the tabs
+// // {  
+// //     tabCounter = JSON.parse(localStorage.getItem("Tab Counter"));
 
-    tabCounter = JSON.parse(localStorage.getItem("Tab Counter"));
+// //     notebooksData = JSON.parse(localStorage.getItem("Notebooks"));
 
-    var data = JSON.parse(localStorage.getItem("savedTabs"));
+// //     console.log('Loading tabs for notebook: ' + notebook_id);
 
-    if(Array.isArray(data)){
-        tabsData = data;
-        tabsData.forEach(function(currentTab) {
-            tabCounter++;
+// //     var openedNotebook_data = notebooksData.find(data_ => data_.id === notebook_id);
 
-            var tabID = currentTab.id;
-            var tabName = currentTab.tabName;
-            // This creates the Tab button
-            var tab = document.createElement("div");
-            tab.id = tabID;
-            var span = document.createElement("span");
-            tab.appendChild(span);
-            span.textContent = tabName; 
+// //     console.log(openedNotebook_data);
+// //     if(Array.isArray(openedNotebook_data)){
+// //         openedNotebook_data.tabsData.forEach(function(currentTab) {
 
-            tab.className = 'tab-box';
-            document.getElementById("tabs-section").insertBefore(tab, addTabButton);
+// //             createTab(currentTab.id, currentTab.name, currentTab.textContent);
+// //             // tabCounter++;
 
-            //#region Close button
-            // This creates the close button and make it functional
-            var closeButton = document.createElement('img');
+// //             // var tab_id = currentTab.id;
+// //             // var tab_name = currentTab.tabName;
+// //             // // This creates the Tab button
+// //             // var tab_ = document.createElement("div");
+// //             // tab_.id = tab_id;
+// //             // var span = document.createElement("span");
+// //             // tab_.appendChild(span);
+// //             // span.textContent = tab_name; 
+
+// //             // tab_.className = 'tab-box';
+// //             // document.getElementById("tabs-section").insertBefore(tab_, addTabButton);
+
+// //             // //#region Close button
+// //             // // This creates the close button and make it functional
+// //             // var closeButton_ = document.createElement('img');
             
-            closeButton.className = 'close-btn';
+// //             // closeButton_.className = 'close-btn';
             
-            tab.appendChild(closeButton);
+// //             // tab_.appendChild(closeButton_);
 
-            closeButton.addEventListener('click', function(event) {
-                event.stopPropagation();
-                closeTab(tabWindow.id, tab.id);
-            });
-            //#endregion
+// //             // closeButton_.addEventListener('click', function(event) {
+// //             //     event.stopPropagation();
+// //             //     closeTab(tabWindow_.id, tab_.id);
+// //             // });
+// //             // //#endregion
 
-            // This creates the Tab window
+// //             // // This creates the Tab window
 
-            var tabWindow = document.createElement("textarea");
+// //             // var tabWindow_ = document.createElement("textarea");
             
-            //this will check if there's another tab that has an id of "New Tab"
-            tabWindow.id = 'notepad-' + tabID;
-            tabWindow.className = 'notepad';
-            container.appendChild(tabWindow);
-            tabWindow.textContent = currentTab.text;
-            tabWindow.placeholder = notepadDefaultText; // placeholder text
+// //             // //this will check if there's another tab that has an id of "New Tab"
+// //             // tabWindow_.id = 'notepad-' + tab_id;
+// //             // tabWindow_.className = 'notepad';
+// //             // container.appendChild(tabWindow_);
+// //             // tabWindow_.textContent = currentTab.text;
+// //             // tabWindow_.placeholder = notepadDefaultText; // placeholder text
 
-            //This will make the tab clickable 
-            tab.addEventListener("click", function() {
-                openTab(tabWindow.id, tabID);
-            });
+// //             // //This will make the tab clickable 
+// //             // tab_.addEventListener("click", function() {
+// //             //     openTab(tabWindow_.id, tab_id);
+// //             // });
 
-            tab.addEventListener('dblclick', function() {
-                renameTab(tab);
-            });
-            // adds the save function that will be called when the text content changes
-            tabWindow.addEventListener('input', function() {
-                saveContent(tabID, tabWindow.value);
-            })
-
-            console.log('Created a tab id ' + tabWindow.id + ' with class name ' + tabWindow.className)
+// //             // tab_.addEventListener('dblclick', function() {
+// //             //     renameTab(tab_);
+// //             // });
+// //             // // adds the save function that will be called when the text content changes
+// //             // tabWindow_.addEventListener('input', function() {
+// //             //     saveContent(tab_id, tabWindow_.value);
+// //             // })
             
-            openTab(tabWindow.id, tabID);
-        });
-    }  
-    tabCounter = JSON.parse(localStorage.getItem("Tab Counter"));
+// //             // openTab(tabWindow_.id, tab_id);
+// //         });
+// //     }  
+// //     tabCounter = JSON.parse(localStorage.getItem("Tab Counter"));
 
-}
+// // }
 
+
+// Notebook
 addNotebook?.addEventListener("click", function(){
     createNotebook();
 })
-createNotebook();
-function createNotebook() { // This will create the UI for the notebook
-    var notebook_name = 'Notebook ' + notebookCounter;
-    var notebook_id = 'notebookID-' + notebookCounter;
+function createNotebook(name__, id__, tabs__data, tab__counter, loadMode) {
+    notebookCounter++;
+    // This will create the UI for the notebook
     var notebook_data = {
-        name: notebook_name,
-        id: notebook_id,
-        tabsData: []
+        name: name__ || 'Notebook ' + notebookCounter,
+        id: id__ || 'notebook-' + notebookCounter,
+        tabs_data: tabs__data || [],
+        tab_counter: tab__counter || 0
     };
 
-    notebooksData.push(notebook_data);
+    // UI section
+    var notebook_ui = document.createElement('div');
+    
+    notebook_ui.className = 'notebook';
+    notebook_ui.id = notebook_data.id;
+    
+    var notebook_text = document.createElement('span');
+    notebook_text.textContent = notebook_data.name;
+    notebook_ui.appendChild(notebook_text);
+    
+    notebookSection.appendChild(notebook_ui);
+    
+    notebook_ui.addEventListener('click', function(){
+        openNotebook(notebook_data.id);
+    });
 
-    var notebook_ = document.createElement('div');
-    notebook_.textContent = notebook_name;
-    // var input_ = document.createElement('input');
-    // input_.className = 'notebook-rename';
-    // notebook_.firstChild.replaceWith(input_);
-    // input_.focus();
-    // notebook_.textContent = input_.value;
-    // notebook_.id = notebook_id;
+    if(!loadMode){
+        console.log('Created notebook');
+        notebookDatabase.push(notebook_data);
+        saveNotebooks();
+    }
 
-    notebook_.className = 'notebook';
+    openNotebook(notebook_data.id);
 
-    notebookSection?.appendChild(notebook_);
+}
+function openNotebook(notebook__id) {
+    if(openedNotebook.id !== notebook__id){
+        var notebookUI = document?.getElementById(openedNotebook.id);
+        
+        if(notebookUI){
+            notebookUI.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+        }
+
+        openedNotebook = notebookDatabase.find(notebook => notebook.id === notebook__id); //searches for the notebook we'll open in the notebook database
+        
+        var tabs_ = document.querySelectorAll('.tab-box');
+
+        tabs_?.forEach(tab => {
+            tab.remove();
+        })
+
+        if(openedNotebook.tabs_data.length === 0){
+            console.error(`No tabs found in ${openedNotebook.id}. Creating one for it.`);
+            createTab();
+        } else {
+            openedNotebook.tabs_data.forEach(element => {
+                createTab(element.id, element.name, element.text, true);
+            });
+        }
+
+        notebookUI = document?.getElementById(openedNotebook.id);
+        
+        if(notebookUI){
+            notebookUI.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+        }
+        
+        notebookUI.style.backgroundColor = 'rgba(0, 0, 0, 0.144)';
+
+    }
 }
 
-function openNotebook(notebook_id) {
-    openedNotebook = notebook_id;
-
+function saveNotebooks() {
+    console.log("Saving notebook");
+    localStorage.setItem("Notebooks", JSON.stringify(notebookDatabase));
 }
 
-if(JSON.parse(localStorage.getItem("savedTabs")) == null)
-{
-    createTab();
+function loadNotebooks() {
+    notebookDatabase = JSON.parse(localStorage.getItem("Notebooks"));
+    
+    notebookDatabase.forEach(notebook => {
+        createNotebook(notebook.name, notebook.id, notebook.tabs_data, notebook.tab_counter, true);
+    });
+
+    openNotebook(notebookDatabase[0].id);
+}
+
+if(JSON.parse(localStorage.getItem("Notebooks")) == null) {
+    createNotebook();
+    console.log('fresh start!');
 } else {
-    loadTabs(); 
+    loadNotebooks(); 
+    console.log('Loaded all notebooks');
 }
-
