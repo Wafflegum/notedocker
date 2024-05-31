@@ -21,13 +21,16 @@
 
 body, html {
   color: var(--text-color-UI);
-  background-image: var(--background-image);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0)), var(--background-image);
   height: 100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
-  backgound-size: 100% 100%;
-  background-attachment: fixed;
   background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #main {
@@ -36,7 +39,7 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
+  backdrop-filter: blur(1em);
 }
 
 #container {
@@ -316,7 +319,7 @@ body, html {
   overflow: auto;
   z-index: 3;
   background-color: var(--background-color);
-  backdrop-filter: saturate(250%);
+  backdrop-filter: saturate(150%);
   box-shadow: rgba(0, 0, 0, 0.1725490196) 10px 11px 20px;
 }
 #settings-panel .vertical-divider {
