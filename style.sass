@@ -118,10 +118,10 @@ body, html
     &::-webkit-scrollbar
         width: 8px
     &::-webkit-scrollbar-track
-        background: rgba(0, 0, 0, 0)
+        background: rgba(0, 0, 0, 0.05)
         margin-block: 10px
     &::-webkit-scrollbar-thumb
-        background: rgba(255, 255, 255, 0.5)
+        background: rgba(136, 136, 136, 0.5)
         border-radius: 10px
         
 .notebook 
@@ -136,8 +136,10 @@ body, html
     align-items: center
     transition: all 0.1s ease
     
+    border-radius: 0.5rem
+    color: red
     &:hover
-        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.315)
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.35)
         transform: translateY(-5px)
         cursor: pointer
     &:active
@@ -270,8 +272,6 @@ body, html
 
 /* #endregion */
 
-
-
 textarea 
     /* background: #3F2E3E */
     background-color: var(--background-color)
@@ -294,30 +294,36 @@ textarea
 /* Settings */
 
 #settings-container 
+    width: 70%
+    height: 70%
+
+    box-sizing: border-box
+
+    color: var(--text-color-UI)
+    
     position: fixed
     z-index: 3
-
     display: flex
     justify-content: center
     align-items: center
 
 
 #settings-panel
-    position: fixed
-    width: 80%
-    height: 80%
+    width: 100%
+    height: 100%
 
-    padding: 50px
+    padding: 3.5rem
 
-    box-sizing: border-box
     border-radius: 50px
 
     display: none
     justify-content: center
     flex-direction: row
-
-    z-index: 3
+    flex-wrap: wrap
+    overflow: auto
     
+    z-index: 3
+
     background-color: var(--background-color)
     backdrop-filter: saturate(250%)
 
@@ -325,9 +331,12 @@ textarea
 
     .vertical-divider
         height: 100%
-        border: 1px solid black
+        width: 1px
+        background: rgb(51,29,44)
+        background: linear-gradient(0deg, rgba(51,29,44,0) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)
 
-        opacity: 0.5 
+
+        opacity: 0.3 
 
     &:active
         display: flex
@@ -336,9 +345,11 @@ textarea
 .settings__sectionlist
     display: flex
     flex-direction: column
-    flex-grow: .5
+    flex: 1 1 20%
+
     margin-right: 10px
-    
+    max-width: 20ch
+
     &__section
         padding: 5px 5px 5px 15px
         transition: 0.1 ease
@@ -350,28 +361,94 @@ textarea
 .settings
     display: flex
     flex-direction: column
-    flex-grow: 4
+    flex: 1 1 70%
     padding: 0 18px 18px 18px
+
+    #appearance-page
+        display: block
+    #about-page
+        display: none
+
+        #wrapper
+            display: flex
+            gap: 0.5rem
+            max-height: 5em
+
+        .social-icons
+            width: fit-content
+            height: fit-content
+            flex: 0 1
+            padding: 0.5em
+            box-sizing: border-box
+
+            display: flex
+            align-items: center
+            justify-content: center
+            transition: all 0.1s ease
+            box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.2)
+            
+            border-radius: 1em
+
+            img 
+                max-height: 3em
+                opacity: var(--text-color-UI)
+
+            &:hover
+                transform: translateY(-5px)
+                box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.2)
+                background: rgba(255, 255, 255, 0.5)
 
     &__title
         font-size: large
         font-weight: bold
         box-sizing: border-box
-        padding-bottom: 10px
+        padding-bottom: .75em
     
     &__config //This is the items that you can configure
         display: flex
-        flex-direction: row
         align-items: center
-        height: fit-content
-        padding: 5px
-        & span
-            color: var(--text-color-notepad)
+        gap: 2px
+        flex-wrap: wrap
 
-    & #text-contrast
-        margin-left: 10px
-        width: fit-content
-        
+        min-height: fit-content
+        padding: 2px
+
+        & .text-contrast
+            color: var(--text-color-notepad)
+        & span
+            flex: 1 1 30%
+            max-width: 30ch
+            min-width: 15ch
+
+        .settings__slider
+            -webkit-appearance: none
+            background: white
+
+            flex: 1 1 70%
+
+            height: 5px
+            border-radius: 25px
+            margin: 1em 1em 1em 1em
+            
+            opacity: 0.7
+            width: fit-content
+
+            box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2)
+            mix-blend-mode: difference
+
+            &::-webkit-slider-thumb
+                -webkit-appearance: none
+                background: black
+                height: 15px
+                width: 15px
+                border-radius: 25px
+            &:hover
+                opacity: 1
+            &::-moz-range-progress
+                -webkit-appearance: none
+                background: rgba(0, 0, 0, 0.2)
+
+
 /* Dark background */
 .overlay 
     position: fixed

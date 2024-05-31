@@ -13,21 +13,31 @@ var openedNotebook = [];
 
 var notepadDefaultText = "Type here...";
 
-// Settings variables
-var settingsButton = document.getElementById("settings-btn");
-var settingsPanel = document.getElementById("settings-panel");
-var textContrastSlider = document.getElementById("text-contrast");
-var backgroundOpacitySlider = document.getElementById("background-opacity");
-
-var overlayBackground = document.getElementById("overlay");
 
 // Buttons
 var clearButton = document.getElementById("clear-btn");
 var addTabButton = document.getElementById("add-tab-btn");
 var addNotebook = document.getElementById("add-notebook-btn");
 
+// Settings variables
+var settingsButton = document.getElementById("settings-btn");
+var settingsPanel = document.getElementById("settings-panel");
+// Appearance
+var appearanceButton = document.getElementById("appearance-btn");
+var appearancePage = document.getElementById("appearance-page");
+
+var aboutButton = document.getElementById("about-btn");
+var aboutPage = document.getElementById("about-page");
+
+var textContrastSlider = document.getElementById("text-contrast");
+var backgroundOpacitySlider = document.getElementById("background-opacity");
+
+var overlayBackground = document.getElementById("overlay");
+
 // CSS Variables
 var root = document.querySelector(":root");
+
+
 
 // Settings
 settingsButton.addEventListener("click", function() { // opens the settings panel
@@ -35,18 +45,32 @@ settingsButton.addEventListener("click", function() { // opens the settings pane
     overlayBackground.style.display = "block";
 });
 
+
 overlayBackground.addEventListener("click", function() { // This closes the settings page when you click off the page
     settingsPanel.style.display = "none";
     overlayBackground.style.display = "none";
 });
 
+// Appearance
+appearanceButton.addEventListener("click", function() {
+    appearancePage.style.display = "block";
+    aboutPage.style.display = "none";
+});
+
 textContrastSlider.oninput = () => {
-    root.style.setProperty("--text-contrast", textContrastSlider.value * 0.1);
-}
+    root.style.setProperty("--text-contrast", textContrastSlider.value * 0.001);
+};
 
 backgroundOpacitySlider.oninput = () => {
-    root.style.setProperty("--background-opacity", backgroundOpacitySlider.value * 0.1);
-}
+    root.style.setProperty("--background-opacity", backgroundOpacitySlider.value * 0.001);
+};
+
+// About
+aboutButton.addEventListener('click', function() {
+    aboutPage.style.display = "block";
+    appearancePage.style.display = "none";
+});
+
 
 // Tab Buttons
 
@@ -380,6 +404,7 @@ function openNotebook(notebook__id) {
         
         if(notebookUI){
             notebookUI.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+            notebookUI.style.color = 'var(--text-color-UI)';
         }
 
         openedNotebook = notebookDatabase.find(notebook => notebook.id === notebook__id); //searches for the notebook we'll open in the notebook database
@@ -402,11 +427,9 @@ function openNotebook(notebook__id) {
         notebookUI = document?.getElementById(openedNotebook.id);
         
         if(notebookUI){
-            notebookUI.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+            notebookUI.style.backgroundColor = 'rgba(0, 0, 0, 0.25)';
+            notebookUI.style.color = 'rgba(255, 255, 255, 1)';
         }
-        
-        notebookUI.style.backgroundColor = 'rgba(0, 0, 0, 0.144)';
-
     }
 }
 
