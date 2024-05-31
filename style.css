@@ -105,7 +105,7 @@ body, html {
   background-color: rgba(0, 0, 0, 0.0274509804);
   padding: 10px;
   gap: 1px;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-gutter: stable;
 }
 #notebooks-section::-webkit-scrollbar {
@@ -173,7 +173,7 @@ body, html {
   gap: 5px;
   align-items: center;
   border-radius: 10px 10px 0 0;
-  overflow-x: scroll;
+  overflow-x: auto;
   margin-bottom: 5px;
 }
 #tabs-section::-webkit-scrollbar {
@@ -183,7 +183,6 @@ body, html {
   background: rgba(255, 255, 255, 0.3215686275);
   border-radius: 40px;
 }
-
 #tabs-section .tab-box {
   min-width: fit-content;
   box-sizing: border-box;
@@ -198,22 +197,23 @@ body, html {
   display: flex;
   text-align: center;
   align-items: center;
-  border-radius: 110px;
+  border-radius: 1.25em;
   text-wrap: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   transition: transform 0.1s ease;
+  transform: translateY(0);
 }
-
 #tabs-section .tab-box:hover {
   height: 90%;
+  cursor: pointer;
 }
 
 #add-tab-btn {
   min-width: 30px;
   height: 70%;
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.2470588235);
   filter: saturate(400%);
   backdrop-filter: blur(50px);
@@ -235,8 +235,8 @@ body, html {
 #add-tab-btn:hover {
   cursor: pointer;
   width: 30px;
-  height: 80%;
-  background: rgba(255, 255, 255, 0.0901960784);
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateY(-5px);
 }
 
 .close-btn {
@@ -265,7 +265,7 @@ body, html {
 }
 
 /* #endregion */
-textarea {
+.notepad {
   /* background: #3F2E3E */
   background-color: var(--background-color);
   backdrop-filter: blur(50px) saturate(200%);
@@ -284,6 +284,13 @@ textarea {
   box-sizing: border-box;
 }
 
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  color: rgba(0, 0, 0, 0.58);
+  pointer-events: none;
+  display: block;
+}
+
 /* Settings */
 #settings-container {
   width: 70%;
@@ -292,7 +299,7 @@ textarea {
   color: var(--text-color-UI);
   position: fixed;
   z-index: 3;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 }
@@ -302,7 +309,7 @@ textarea {
   height: 100%;
   padding: 3.5rem;
   border-radius: 50px;
-  display: none;
+  display: flex;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
@@ -422,9 +429,30 @@ textarea {
 .settings__config .settings__slider:hover {
   opacity: 1;
 }
+.settings__config .settings__slider::-moz-range-thumb {
+  -moz-appearance: none;
+  background: black;
+  height: 15px;
+  width: 15px;
+  outline: 0;
+  border-radius: 25px;
+}
+.settings__config .settings__slider::-moz-range-track {
+  -moz-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 25px;
+  margin: 1em 1em 1em 1em;
+  outline: 0;
+  border: 0;
+  opacity: 0.7;
+  width: fit-content;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+  mix-blend-mode: difference;
+}
 .settings__config .settings__slider::-moz-range-progress {
-  -webkit-appearance: none;
-  background: rgba(0, 0, 0, 0.2);
+  -moz-appearance: none;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 /* Dark background */

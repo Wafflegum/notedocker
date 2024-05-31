@@ -11,7 +11,7 @@ var openedTabID;
 var openedNotepad;
 var openedNotebook = [];
 
-var notepadDefaultText = "Type here...";
+var notepadDefaultText = "Type here! Text Formatting: Bold: ctrl+b Italic: ctrl+i Underline: ctrl+u";
 
 
 // Buttons
@@ -21,7 +21,7 @@ var addNotebook = document.getElementById("add-notebook-btn");
 
 // Settings variables
 var settingsButton = document.getElementById("settings-btn");
-var settingsPanel = document.getElementById("settings-panel");
+var settingsContainer = document.getElementById("settings-container");
 // Appearance
 var appearanceButton = document.getElementById("appearance-btn");
 var appearancePage = document.getElementById("appearance-page");
@@ -37,17 +37,15 @@ var overlayBackground = document.getElementById("overlay");
 // CSS Variables
 var root = document.querySelector(":root");
 
-
-
 // Settings
 settingsButton.addEventListener("click", function() { // opens the settings panel
-    settingsPanel.style.display = "flex";
+    settingsContainer.style.display = "flex";
     overlayBackground.style.display = "block";
 });
 
 
 overlayBackground.addEventListener("click", function() { // This closes the settings page when you click off the page
-    settingsPanel.style.display = "none";
+    settingsContainer.style.display = "none";
     overlayBackground.style.display = "none";
 });
 
@@ -106,12 +104,13 @@ function createTab (tabID, tabName, text, loadMode) //creates a new tab
 
     // This creates the Tab window
 
-    var tabWindow = document.createElement("textarea");
+    var tabWindow = document.createElement("div");
+    tabWindow.contentEditable = true;
 
     //this will check if there's another tab that has an id of "New Tab"
     tabWindow.id = `notepad-${openedNotebook.id}-${tab_id}`;
     tabWindow.className = 'notepad';
-    tabWindow.placeholder = notepadDefaultText; // placeholder text
+    tabWindow.setAttribute('placeholder', notepadDefaultText); // placeholder text
     container.appendChild(tabWindow);
 
     if(text)
