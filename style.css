@@ -6,6 +6,7 @@
   --background-color: var(--light-background-color);
   --text-color-UI: var(--light-text-color-UI);
   --text-color-notepad: var(--light-text-color-notepad);
+  --text-size-notepad: 16px;
   --light-background-color: rgb(255, 255, 255, var(--background-opacity));
   --light-text-color-UI: rgba(0, 0, 0, 0.8);
   --light-text-color-notepad: rgba(0, 0, 0, var(--text-contrast));
@@ -278,7 +279,7 @@ body, html {
   height: 100%;
   max-height: 100%;
   padding: 35px;
-  font-size: 16px;
+  font-size: var(--text-size-notepad);
   border: 0;
   outline: 0;
   border-radius: 50px;

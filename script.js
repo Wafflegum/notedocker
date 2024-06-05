@@ -114,7 +114,7 @@ function createTab (tabID, tabName, text, loadMode) //creates a new tab
     container.appendChild(tabWindow);
 
     if(text)
-        tabWindow.value = text || '';
+        tabWindow.textContent = text || '';
 
     //This will make the tab clickable 
     tab_.addEventListener("click", function() {
@@ -126,7 +126,7 @@ function createTab (tabID, tabName, text, loadMode) //creates a new tab
     });
     // adds the save function that will be called when the text content changes
     tabWindow.addEventListener('input', function() {
-        saveContent(tab_id, tabWindow.value);
+        saveContent(tab_id, tabWindow.textContent);
     })
 
     //#region Close button
@@ -263,7 +263,7 @@ function closeTab(notepad_id, tab_id) {
 
     openedNotebook.tabs_data = openedNotebook.tabs_data.filter(tab => tab.id !== tab_id);
 
-    saveTabs();
+    saveNotebooks();
 
     if(openedTabID === tab_id)
     {
