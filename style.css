@@ -22,7 +22,7 @@
 
 body, html {
   color: var(--text-color-UI);
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0)), var(--background-image);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)), var(--background-image);
   height: 100%;
   width: 100%;
   margin: 0;
@@ -272,12 +272,11 @@ body, html {
 .notepad {
   /* background: #3F2E3E */
   background-color: var(--background-color);
-  backdrop-filter: blur(50px) saturate(200%);
+  backdrop-filter: blur(50px) saturate(250%);
   /* background: none */
   color: var(--text-color-notepad);
   width: 100%;
   height: 100%;
-  max-height: 100%;
   padding: 35px;
   font-size: var(--text-size-notepad);
   border: 0;
@@ -286,6 +285,7 @@ body, html {
   box-shadow: rgba(0, 0, 0, 0.1725490196) 10px 11px 20px;
   resize: none;
   box-sizing: border-box;
+  overflow: auto;
 }
 
 [contenteditable=true]:empty:before {
