@@ -6,6 +6,10 @@
     box-sizing: border-box
     border-right: 1px solid gray
 
+    display: flex
+    flex-flow: column
+    gap: 1rem
+
     align-self: start
 
     position: sticky
@@ -17,3 +21,13 @@
 
     &:hover
         width: 20rem
+
+.note
+    padding: 0.5rem 0.75rem
+    box-sizing: border-box
+
+    transition: background 0.2s ease
+    border-radius: .5rem
+
+    &:hover
+        background: var(--button-highlight)

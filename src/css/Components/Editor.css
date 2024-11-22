@@ -1,10 +1,28 @@
 .editor-container {
-  width: 100%;
-}
-
-#editorjs {
+  min-height: fit-content;
   width: 100%;
   padding: 1rem 2rem;
+}
+.editor-container .note-header {
+  width: 41rem;
+  height: 3rem;
+  margin: 0 auto 0 auto;
+  padding: 0.25 0rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  outline: 0;
+  border-bottom: 1.5px solid rgb(163, 163, 163);
+}
+.editor-container #editorjs {
+  flex: 1;
+  height: fit-content;
+  width: 100%;
+}
+.editor-container #editorjs .codex-editor {
+  height: 100%;
 }
 
 /*# sourceMappingURL=Editor.css.map */
