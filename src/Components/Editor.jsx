@@ -43,6 +43,7 @@ const Editor = ({ notes, setNotes }) => {
 	const [id, setId] = useState(notes.id ? notes.id : nanoid(6))
 
 	function initEditor() {
+		setHeader(notes.header)
 		if (!editorInstance) {
 			editorInstance = new EditorJS({
 				holder: 'editorjs',
@@ -90,8 +91,9 @@ const Editor = ({ notes, setNotes }) => {
 		}
 	}
 	useEffect(() => {
-		initEditor()
 		setHeader(notes ? notes.header : '')
+		setId(notes.id)
+		initEditor()
 
 		return () => {
 			if (editorInstance && typeof editorInstance.destroy === 'function') {

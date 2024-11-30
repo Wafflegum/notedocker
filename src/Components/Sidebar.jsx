@@ -21,9 +21,8 @@ const Sidebar = ({ notes, setEditor }) => {
 
 		const updatedData = [newNote, ...currentData]
 		setData(updatedData)
-		localStorage.setItem('notes', JSON.stringify(updatedData))
-
 		setEditor(newNote)
+		localStorage.setItem('notes', JSON.stringify(updatedData))
 	}
 
 	return (
@@ -32,20 +31,25 @@ const Sidebar = ({ notes, setEditor }) => {
 				<h2>NoteDocker</h2>
 			</div>
 			<div id="sidebarContent">
-				{notes
-					? notes.map((notedock, i) => {
-							return (
-								<button className="note" onClick={() => handleOpenNote(notedock.id)} key={i}>
-									{notedock.header}
-								</button>
-							)
-					  })
-					: ''}
-				<div id="sidebar-buttons">
-					<button id="addNote" onClick={handleNoteCreation}>
+				<div className="notes-container">
+					{data
+						? data.map((notedock, i) => {
+								return (
+									<button className="note" onClick={() => handleOpenNote(notedock.id)} key={i}>
+										<div className="note-icon"></div>
+										<div className="note-name">{notedock.header}</div>
+									</button>
+								)
+						  })
+						: ''}
+				</div>
+				<div id="sidebarButtons">
+					<button className="sidebar-btn" id="addNote" onClick={handleNoteCreation}>
 						New Note
 					</button>
-					<button id="addFolder">New Folder</button>
+					<button className="sidebar-btn" id="addFolder">
+						New Folder
+					</button>
 				</div>
 			</div>
 		</div>
